@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PetaKarir — Eksplorasi Profesi &amp; Karier Rumah Sakit</title>
+  <link rel="icon" href="logo.png" />
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          colors: {
+            alabaster: '#F7F6F2',
+            ink: '#141619'
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body
+  class="bg-[#F7F6F2] text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased selection:bg-teal-600 selection:text-white transition-colors duration-300">
+
+  <!-- =====================================================================
+       NAVIGATION HEADER
+       ===================================================================== -->
+  <header
+    class="fixed top-0 inset-x-0 z-40 transition-colors duration-300 bg-slate-950/75 backdrop-blur-md border-b border-white/10">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Brand -->
+      <a href="#hero-section" class="flex items-center gap-3 group focus:outline-none">
+        <img src="logo.png" alt="Logo SMAN 4" class="w-8 h-8 rounded-lg object-contain bg-white/10 p-0.5" />
+        <div class="flex flex-col">
+          <span class="text-base font-extrabold tracking-tight text-white leading-none">PetaKarir</span>
+          <span class="text-[10px] font-medium tracking-widest uppercase text-slate-400 mt-0.5">Direktori Medis</span>
+        </div>
+      </a>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center gap-8 text-xs font-semibold tracking-wide uppercase text-slate-300">
+        <a href="#hero-section" class="hover:text-white transition-colors">Beranda</a>
+        <a href="#detail-section" class="hover:text-white transition-colors">Penjelasan Profesi</a>
+        <button type="button" onclick="toggleAiChat(true)" class="hover:text-teal-300 transition-colors uppercase">
+          Konsultasi Karier
+        </button>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-2.5">
+        <button type="button" onclick="toggleDarkMode()" aria-label="Ubah Tema Tampilan"
+          class="w-9 h-9 rounded-lg border border-white/15 bg-white/5 hover:bg-white/15 text-slate-200 flex items-center justify-center transition-colors">
+          <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
+        </button>
+
+        <button type="button" onclick="toggleMobileMenu()" aria-label="Buka Menu Navigasi"
+          class="md:hidden w-9 h-9 rounded-lg border border-white/15 bg-white/5 hover:bg-white/15 text-slate-200 flex items-center justify-center transition-colors">
+          <i data-lucide="menu" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden bg-slate-950/95 border-b border-white/10 px-4 py-4 space-y-2">
+      <a href="#hero-section" onclick="closeMobileMenu()"
+        class="block px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-200 hover:bg-white/10">
+        Beranda
+      </a>
+      <a href="#detail-section" onclick="closeMobileMenu()"
+        class="block px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-200 hover:bg-white/10">
+        Penjelasan Profesi
+      </a>
+      <button type="button" onclick="closeMobileMenu(); toggleAiChat(true);"
+        class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-semibold text-teal-300 hover:bg-white/10">
+        Konsultasi Karier
+      </button>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       HERO SECTION: FULLSCREEN CROSSFADE + STACKED INTERACTIVE CARDS
+       ===================================================================== -->
+  <section id="hero-section" class="relative min-h-screen flex items-center overflow-hidden bg-slate-950 pt-20 pb-12">
+    <!-- Dual-Layer Background Crossfade -->
+    <div id="hero-bg-a" class="hero-bg-layer is-active"></div>
+    <div id="hero-bg-b" class="hero-bg-layer"></div>
+
+    <!-- Architectural Contrast Scrim -->
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/80 to-slate-950/55 pointer-events-none">
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/45 pointer-events-none">
+    </div>
+
+    <!-- Main Hero Grid -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center lg:-translate-y-4">
+
+        <!-- Left Column: Active Profession Spotlight (Elevated Position) -->
+        <div id="hero-left-content" class="lg:col-span-6 space-y-6">
+          <div class="flex flex-wrap items-center gap-3">
+            <span id="hero-index"
+              class="font-mono text-xs font-bold tracking-widest px-2.5 py-1 rounded bg-teal-500/20 border border-teal-400/30 text-teal-300 tabular-nums">
+              01 / 05
+            </span>
+            <span id="hero-category" class="text-xs font-semibold uppercase tracking-widest text-slate-300">
+              Pelayanan Medis &amp; Klinis
+            </span>
+          </div>
+
+          <h1 id="hero-title"
+            class="text-3xl sm:text-5xl lg:text-[3.35rem] font-extrabold text-white tracking-tight leading-[1.08]">
+            Dokter Umum &amp; Spesialis
+          </h1>
+
+          <p id="hero-subtitle" class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl">
+            Menangani diagnosis klinis, tindakan medis, hingga perawatan pasien terpadu dengan estimasi penghasilan Rp
+            12 Juta – Rp 65+ Juta per bulan.
+          </p>
+
+          <!-- Key Metrics Strip -->
+          <div class="grid grid-cols-3 gap-3 pt-1 max-w-xl">
+            <div class="p-3.5 rounded-xl bg-white/[0.06] border border-white/10 backdrop-blur-sm">
+              <p class="text-[11px] uppercase tracking-wider text-slate-400">Estimasi Gaji</p>
+              <p id="hero-stat-salary" class="font-mono text-xs sm:text-sm font-bold text-white mt-1 tabular-nums">
+                Rp 12 – 65+ Jt/bln
+              </p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-white/[0.06] border border-white/10 backdrop-blur-sm">
+              <p class="text-[11px] uppercase tracking-wider text-slate-400">Kualifikasi</p>
+              <p id="hero-stat-edu" class="text-xs sm:text-sm font-bold text-teal-300 mt-1">
+                S1 Profesi + STR &amp; SIP
+              </p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-white/[0.06] border border-white/10 backdrop-blur-sm">
+              <p class="text-[11px] uppercase tracking-wider text-slate-400">Pola Kerja</p>
+              <p id="hero-stat-shift" class="text-xs sm:text-sm font-bold text-white mt-1">
+                Poliklinik &amp; Jaga Shift
+              </p>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button type="button" onclick="scrollToDetail()"
+              class="inline-flex items-center gap-2.5 px-5 py-3 rounded-xl bg-teal-600 hover:bg-teal-500 text-white text-sm font-bold transition-colors shadow-lg shadow-teal-950/40">
+              <span>Lihat Penjelasan Lengkap</span>
+              <i data-lucide="arrow-down" class="w-4 h-4"></i>
+            </button>
+
+            <button type="button" onclick="askAiAboutCurrentProfession()"
+              class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white text-sm font-semibold transition-colors">
+              <i data-lucide="message-square" class="w-4 h-4 text-teal-300"></i>
+              <span>Tanya Konselor Karier</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Overlapping Stacked Cards (No Arrows, No Progress Bar) -->
+        <div class="lg:col-span-6 flex flex-col items-center lg:items-end">
+          <div class="w-full max-w-[460px]">
+            <!-- Stack Instruction Header -->
+            <div class="flex items-center justify-between mb-3 px-1">
+              <span class="text-[11px] font-semibold uppercase tracking-widest text-slate-400">
+                Tumpukan Profesi
+              </span>
+              <button type="button" onclick="cycleDeckForward()"
+                class="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-300 hover:text-teal-200 transition-colors">
+                <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                <span>Pindahkan Kartu Depan</span>
+              </button>
+            </div>
+
+            <!-- Interactive Stacked Deck Container -->
+            <div id="hero-cards-deck" class="relative w-full h-[360px] sm:h-[400px] select-none touch-pan-y"
+              aria-label="Tumpukan kartu profesi rumah sakit">
+              <!-- Persistent Deck Cards Rendered via JS -->
+            </div>
+
+            <!-- Subtle Interaction Helper -->
+            <p class="text-[11px] text-slate-400 mt-4 text-center lg:text-left">
+              Gulir (<em>scroll</em>) atau geser kartu paling depan untuk membuka profesi di belakangnya.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       DETAIL SECTION: EDITORIAL CLINICAL DOSSIER
+       ===================================================================== -->
+  <main id="detail-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 space-y-16">
+
+    <!-- 1. Dossier Editorial Masthead & Navigation -->
+    <div class="reveal-card border-b border-slate-200 dark:border-slate-800 pb-8 space-y-6">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div class="space-y-3">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-teal-500/10 border border-teal-500/20 text-teal-700 dark:text-teal-300 font-mono text-[11px] font-bold uppercase tracking-wider">
+              <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
+              Berkas Profesi Terverifikasi
+            </span>
+            <span id="detail-badge" class="font-mono text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              Pelayanan Medis &amp; Klinis
+            </span>
+          </div>
+
+          <h2 id="detail-title" class="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            Dokter Umum &amp; Spesialis
+          </h2>
+          <p id="detail-tagline" class="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">
+            Garda terdepan diagnosis klinis, tata laksana terapi, dan keselamatan pasien di rumah sakit.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3 shrink-0">
+          <button type="button" onclick="copyProfessionSummary()"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-300/80 dark:border-slate-700 hover:border-teal-600 text-xs font-bold text-slate-800 dark:text-slate-200 transition-colors shadow-sm">
+            <i data-lucide="copy" class="w-4 h-4 text-teal-600 dark:text-teal-400"></i>
+            <span>Salin Ringkasan</span>
+          </button>
+          <button type="button" onclick="toggleAiChat(true)"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 dark:bg-teal-600 hover:bg-slate-800 dark:hover:bg-teal-500 text-white text-xs font-bold transition-colors shadow-md">
+            <i data-lucide="message-square" class="w-4 h-4 text-teal-300 dark:text-white"></i>
+            <span>Konsultasi Karier</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Section Anchor Tabs -->
+      <nav class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-2 text-xs font-bold text-slate-600 dark:text-slate-400" aria-label="Navigasi Bagian">
+        <a href="#dossier-overview" class="px-3 py-1.5 rounded-lg bg-slate-200/70 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-300/70 dark:hover:bg-slate-700 transition-colors shrink-0">
+          01. Ikhtisar &amp; Profil
+        </a>
+        <a href="#dossier-compensation" class="px-3 py-1.5 rounded-lg hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors shrink-0">
+          02. Struktur Gaji &amp; Tunjangan
+        </a>
+        <a href="#dossier-regulations" class="px-3 py-1.5 rounded-lg hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors shrink-0">
+          03. Kualifikasi &amp; Regulasi RS
+        </a>
+        <a href="#dossier-ladder" class="px-3 py-1.5 rounded-lg hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors shrink-0">
+          04. Jenjang Karier
+        </a>
+        <a href="#dossier-skills" class="px-3 py-1.5 rounded-lg hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors shrink-0">
+          05. Tugas &amp; Kompetensi
+        </a>
+        <a href="#dossier-analysis" class="px-3 py-1.5 rounded-lg hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors shrink-0">
+          06. Keuntungan &amp; Tantangan
+        </a>
+        <a href="#dossier-roadmap" class="px-3 py-1.5 rounded-lg hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors shrink-0">
+          07. Peta Roadmap
+        </a>
+      </nav>
+    </div>
+
+    <!-- 2. Asymmetric Executive Showcase (Overview + Photo + Quick Facts Strip) -->
+    <section id="dossier-overview" class="reveal-card">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <!-- Photo with editorial frame -->
+        <div class="lg:col-span-5 relative">
+          <div class="relative rounded-2xl overflow-hidden aspect-[4/3] sm:aspect-[16/11] bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xl">
+            <img id="detail-hero-img"
+              src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80"
+              alt="Ilustrasi Profesi" referrerpolicy="no-referrer" onerror="handleImageError(this)"
+              class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+            <div class="absolute bottom-4 inset-x-4 flex items-center justify-between text-xs text-white">
+              <span class="font-mono text-[11px] text-teal-300 font-bold bg-slate-950/80 px-2.5 py-1 rounded backdrop-blur-sm border border-white/10">
+                STANDAR KOMPETENSI RS
+              </span>
+              <span class="text-[11px] text-slate-300 bg-slate-950/80 px-2 py-1 rounded backdrop-blur-sm">
+                Referensi Terkini
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Editorial Overview -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="space-y-3">
+            <h3 class="text-xs font-mono font-bold uppercase tracking-widest text-teal-700 dark:text-teal-400">
+              Cakupan Pelayanan &amp; Tanggung Jawab Klinis
+            </h3>
+            <p id="detail-overview" class="text-base sm:text-lg text-slate-800 dark:text-slate-200 leading-relaxed font-normal">
+              Dokter di rumah sakit bertanggung jawab melakukan pemeriksaan fisik, menegakkan diagnosis berdasarkan bukti
+              klinis dan penunjang diagnostik, merencanakan terapi farmakologis maupun operatif, serta memimpin tim medis
+              multidisiplin demi pemulihan pasien secara optimal.
+            </p>
+          </div>
+
+          <!-- Editorial Specs Highlight Bar -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <div class="p-4 rounded-xl bg-white dark:bg-slate-900 border-l-4 border-teal-600 dark:border-teal-400 border border-slate-200/80 dark:border-slate-800 shadow-sm">
+              <p class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400">Orientasi Pelayanan</p>
+              <p class="text-sm font-bold text-slate-900 dark:text-white mt-1">Keselamatan Pasien (Patient Safety) &amp; Tata Laksana Berbasis Bukti</p>
+            </div>
+            <div class="p-4 rounded-xl bg-white dark:bg-slate-900 border-l-4 border-slate-700 dark:border-slate-500 border border-slate-200/80 dark:border-slate-800 shadow-sm">
+              <p class="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400">Model Kolaborasi</p>
+              <p class="text-sm font-bold text-slate-900 dark:text-white mt-1">Tim Medis Interdisipliner (Dokter, Ners, Farmasi, Laboratorium)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Remuneration & Compensation Ledger (Authoritative Spec Sheet) -->
+    <section id="dossier-compensation" class="reveal-card space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-4">
+        <div>
+          <span class="text-xs font-mono font-bold uppercase tracking-widest text-teal-700 dark:text-teal-400">
+            Tolok Ukur Penghasilan
+          </span>
+          <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
+            Struktur Remunerasi &amp; Paket Tunjangan
+          </h3>
+        </div>
+        <span class="text-xs text-slate-500 font-mono">Berdasarkan Survei Nasional &amp; Standar Faskes</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- The Salary Tier Ladder (Left 7 cols) -->
+        <div class="lg:col-span-7 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800 overflow-hidden shadow-sm">
+          <div class="p-4 sm:p-5 flex items-center justify-between gap-4">
+            <div>
+              <span class="text-[11px] font-mono font-bold uppercase text-slate-400 dark:text-slate-500">Tingkat 01</span>
+              <p class="text-sm font-bold text-slate-900 dark:text-white">Tingkat Pemula (Entry-Level)</p>
+            </div>
+            <p id="salary-entry" class="font-mono text-sm sm:text-base font-bold text-slate-900 dark:text-white tabular-nums text-right">-</p>
+          </div>
+
+          <div class="p-4 sm:p-5 flex items-center justify-between gap-4">
+            <div>
+              <span class="text-[11px] font-mono font-bold uppercase text-slate-400 dark:text-slate-500">Tingkat 02</span>
+              <p class="text-sm font-bold text-slate-900 dark:text-white">Tingkat Menengah (Mid-Level)</p>
+            </div>
+            <p id="salary-mid" class="font-mono text-sm sm:text-base font-bold text-slate-900 dark:text-white tabular-nums text-right">-</p>
+          </div>
+
+          <div class="p-4 sm:p-5 flex items-center justify-between gap-4 bg-teal-500/[0.04] dark:bg-teal-500/[0.07]">
+            <div>
+              <span class="text-[11px] font-mono font-bold uppercase text-teal-700 dark:text-teal-400">Tingkat 03 • Keahlian Lanjut</span>
+              <p class="text-sm font-extrabold text-teal-800 dark:text-teal-300">Senior / Spesialis Terdaftar</p>
+            </div>
+            <p id="salary-senior" class="font-mono text-sm sm:text-base font-extrabold text-teal-700 dark:text-teal-300 tabular-nums text-right">-</p>
+          </div>
+
+          <div class="p-4 sm:p-5 flex items-center justify-between gap-4">
+            <div>
+              <span class="text-[11px] font-mono font-bold uppercase text-slate-400 dark:text-slate-500">Tingkat 04 • Benchmark</span>
+              <p class="text-sm font-bold text-slate-900 dark:text-white">Pasar Kerja Internasional</p>
+            </div>
+            <p id="salary-intl" class="font-mono text-sm sm:text-base font-bold text-slate-700 dark:text-slate-300 tabular-nums text-right">-</p>
+          </div>
+        </div>
+
+        <!-- Benefits & Allowance Footnote Block (Right 5 cols) -->
+        <div class="lg:col-span-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-6 space-y-4 shadow-sm">
+          <div class="flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center">
+              <i data-lucide="shield-check" class="w-4 h-4"></i>
+            </span>
+            <h4 class="text-sm font-extrabold text-slate-900 dark:text-white">
+              Tunjangan &amp; Komponen Proteksi
+            </h4>
+          </div>
+          <p id="detail-allowances" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
+            -
+          </p>
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 space-y-1 font-mono">
+            <p>• Angka estimasi dapat bervariasi bergantung pada tipe kelas RS (A/B/C/D).</p>
+            <p>• Jasa medis dihitung proporsional terhadap volume tindakan &amp; konsultasi.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Operational Requirements & Compliance Matrix -->
+    <section id="dossier-regulations" class="reveal-card space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-4">
+        <div>
+          <span class="text-xs font-mono font-bold uppercase tracking-widest text-teal-700 dark:text-teal-400">
+            Standar Regulasi
+          </span>
+          <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
+            Kualifikasi Lisensi &amp; Lingkungan Operasional
+          </h3>
+        </div>
+        <span class="text-xs text-slate-500 font-mono">Ketentuan Kementerian Kesehatan RI</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200/90 dark:border-slate-800 space-y-3 shadow-sm">
+          <span class="font-mono text-xs font-bold text-teal-700 dark:text-teal-400 uppercase tracking-wider block">
+            01 / Pendidikan &amp; Lisensi
+          </span>
+          <p id="detail-education" class="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
+            -
+          </p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200/90 dark:border-slate-800 space-y-3 shadow-sm">
+          <span class="font-mono text-xs font-bold text-teal-700 dark:text-teal-400 uppercase tracking-wider block">
+            02 / Pola Shift &amp; Jam Kerja
+          </span>
+          <p id="detail-shift" class="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
+            -
+          </p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200/90 dark:border-slate-800 space-y-3 shadow-sm">
+          <span class="font-mono text-xs font-bold text-teal-700 dark:text-teal-400 uppercase tracking-wider block">
+            03 / Penempatan Unit RS
+          </span>
+          <p id="detail-work-env" class="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
+            -
+          </p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200/90 dark:border-slate-800 space-y-3 shadow-sm">
+          <span class="font-mono text-xs font-bold text-teal-700 dark:text-teal-400 uppercase tracking-wider block">
+            04 / Prospek &amp; Kebutuhan
+          </span>
+          <p id="detail-outlook" class="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
+            -
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Connected Career Ladder Progression -->
+    <section id="dossier-ladder" class="reveal-card space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-4">
+        <div>
+          <span class="text-xs font-mono font-bold uppercase tracking-widest text-teal-700 dark:text-teal-400">
+            Jenjang Kemajuan
+          </span>
+          <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
+            Trajektori Karier Rumah Sakit
+          </h3>
+        </div>
+        <span class="text-xs text-slate-500 font-mono">4 Tingkatan Kemandirian Klinis</span>
+      </div>
+
+      <div id="detail-career-ladder" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- 6. Editorial Dual-Matrix: Tasks & Skills -->
+    <section id="dossier-skills" class="reveal-card space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-4">
+        <div>
+          <span class="text-xs font-mono font-bold uppercase tracking-widest text-teal-700 dark:text-teal-400">
+            Spesifikasi Kerja
+          </span>
+          <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
+            Tanggung Jawab Harian &amp; Matriks Kompetensi
+          </h3>
+        </div>
+        <span class="text-xs text-slate-500 font-mono">Standar Akreditasi STARKES</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Left: Daily Tasks (Numbered Specs) -->
+        <div class="lg:col-span-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-6 sm:p-7 space-y-5 shadow-sm">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+            <h4 class="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+              <i data-lucide="clipboard-list" class="w-4 h-4 text-teal-600 dark:text-teal-400"></i>
+              Tugas Utama &amp; Rutinitas Harian
+            </h4>
+            <span class="text-[11px] font-mono text-slate-400">Alur Shift</span>
+          </div>
+          <ul id="detail-tasks" class="space-y-3"></ul>
+        </div>
+
+        <!-- Right: Dual Competency Stack (Hard & Soft Skills) -->
+        <div class="lg:col-span-6 space-y-6">
+          <!-- Hard Skills -->
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-6 sm:p-7 space-y-4 shadow-sm">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <h4 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                <i data-lucide="wrench" class="w-4 h-4 text-teal-600 dark:text-teal-400"></i>
+                Kompetensi Teknis &amp; Klinis (Hard Skills)
+              </h4>
+              <span class="text-[11px] font-mono text-slate-400">Klinikal</span>
+            </div>
+            <ul id="detail-hard-skills" class="grid grid-cols-1 gap-2.5"></ul>
+          </div>
+
+          <!-- Soft Skills -->
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-6 sm:p-7 space-y-4 shadow-sm">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <h4 class="text-sm font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                <i data-lucide="heart-handshake" class="w-4 h-4 text-teal-600 dark:text-teal-400"></i>
+                Kompetensi Interpersonal (Soft Skills)
+              </h4>
+              <span class="text-[11px] font-mono text-slate-400">Relasional</span>
+            </div>
+            <ul id="detail-soft-skills" class="grid grid-cols-1 gap-2.5"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Comparative Balance Ledger: Pros vs Cons -->
+    <section id="dossier-analysis" class="reveal-card space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-4">
+        <div>
+          <span class="text-xs font-mono font-bold uppercase tracking-widest text-teal-700 dark:text-teal-400">
+            Tinjauan Lapangan
+          </span>
+          <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
+            Kelebihan &amp; Realitas Tantangan Profesi
+          </h3>
+        </div>
+        <span class="text-xs text-slate-500 font-mono">Analisis Objektif Karier</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Pros -->
+        <div class="rounded-2xl p-6 sm:p-7 bg-emerald-500/[0.04] dark:bg-emerald-500/[0.06] border border-emerald-500/20 space-y-4">
+          <div class="flex items-center gap-2 pb-3 border-b border-emerald-500/20 text-emerald-800 dark:text-emerald-300">
+            <i data-lucide="trending-up" class="w-4 h-4"></i>
+            <h4 class="text-base font-extrabold">Nilai Tambah &amp; Keunggulan Karier</h4>
+          </div>
+          <ul id="detail-pros" class="space-y-3"></ul>
+        </div>
+
+        <!-- Cons -->
+        <div class="rounded-2xl p-6 sm:p-7 bg-amber-500/[0.04] dark:bg-amber-500/[0.06] border border-amber-500/20 space-y-4">
+          <div class="flex items-center gap-2 pb-3 border-b border-amber-500/20 text-amber-800 dark:text-amber-300">
+            <i data-lucide="shield-alert" class="w-4 h-4"></i>
+            <h4 class="text-base font-extrabold">Tantangan Nyata &amp; Mitigasi Stres</h4>
+          </div>
+          <ul id="detail-cons" class="space-y-3"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Sequential Roadmap Milestones -->
+    <section id="dossier-roadmap" class="reveal-card space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-4">
+        <div>
+          <span class="text-xs font-mono font-bold uppercase tracking-widest text-teal-700 dark:text-teal-400">
+            Peta Persiapan
+          </span>
+          <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
+            Tahapan Menuju Praktik Mandiri
+          </h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Klik salah satu tahapan untuk melihat prasyarat dokumen, izin resmi, dan lembaga pengampu.
+          </p>
+        </div>
+        <span class="text-xs text-slate-500 font-mono">Panduan Calon Tenaga Medis</span>
+      </div>
+
+      <div id="roadmap-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- Rendered by JS as 4 sequential milestones -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =====================================================================
+       STAGE DETAIL MODAL
+       ===================================================================== -->
+  <div id="detail-modal"
+    class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm">
+    <div
+      class="w-full max-w-lg rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 sm:p-7 shadow-2xl space-y-5">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <span id="modal-stage-badge"
+            class="font-mono text-[11px] font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400">
+            Tahap 01
+          </span>
+          <h4 id="modal-title" class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white mt-1">
+            Judul Tahapan
+          </h4>
+          <p id="modal-duration" class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">
+            Estimasi Waktu
+          </p>
+        </div>
+        <button type="button" onclick="closeDetailModal()" aria-label="Tutup Modal"
+          class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <p id="modal-desc" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+
+      <div
+        class="p-4 rounded-xl bg-[#F7F6F2] dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/60 space-y-2">
+        <p class="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
+          Target &amp; Kelengkapan Utama
+        </p>
+        <ul id="modal-deliverables" class="space-y-1.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300"></ul>
+      </div>
+
+      <div class="text-xs text-slate-600 dark:text-slate-400">
+        <span class="font-bold text-slate-800 dark:text-slate-200">Institusi &amp; Rujukan Resmi:</span>
+        <span id="modal-resources">-</span>
+      </div>
+
+      <div class="pt-2 flex justify-end">
+        <button type="button" onclick="closeDetailModal()"
+          class="px-5 py-2.5 rounded-xl bg-slate-900 dark:bg-teal-600 text-white text-xs font-bold hover:opacity-90 transition-opacity">
+          Tutup Rincian
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       KONSULTASI KARIER WIDGET (API KEY CONFIGURED IN script.js)
+       ===================================================================== -->
+  <button id="ai-chat-fab" type="button" onclick="toggleAiChat(true)"
+    class="fixed bottom-5 right-5 z-40 inline-flex items-center gap-2.5 px-4 py-3 rounded-xl bg-slate-900 dark:bg-teal-600 hover:bg-slate-800 dark:hover:bg-teal-500 text-white text-xs sm:text-sm font-bold shadow-xl border border-white/10 transition-all">
+    <i data-lucide="message-square" class="w-4 h-4 text-teal-300 dark:text-white"></i>
+    <span>Konsultasi Karier</span>
+  </button>
+
+  <aside id="ai-chat-window"
+    class="hidden fixed bottom-5 right-5 z-50 w-[calc(100vw-2.5rem)] sm:w-[400px] max-h-[82vh] flex flex-col rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden">
+    <!-- Drawer Header -->
+    <div class="px-4 py-3.5 bg-slate-950 text-white flex items-center justify-between border-b border-white/10">
+      <div>
+        <h3 class="text-sm font-extrabold tracking-tight">Konsultasi Karier</h3>
+        <p id="ai-active-context-badge" class="text-[11px] text-teal-300 mt-0.5">
+          Konteks: Dokter Umum &amp; Spesialis
+        </p>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <button type="button" onclick="resetAiChat()" title="Mulai Ulang Percakapan"
+          class="w-8 h-8 rounded-lg hover:bg-white/10 text-slate-300 flex items-center justify-center transition-colors">
+          <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+        </button>
+        <button type="button" onclick="toggleAiChat(false)" title="Tutup Jendela Konsultasi"
+          class="w-8 h-8 rounded-lg hover:bg-white/10 text-slate-300 flex items-center justify-center transition-colors">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Prompt Suggestions -->
+    <div
+      class="px-3.5 py-2.5 bg-[#F7F6F2] dark:bg-slate-950/60 border-b border-slate-200/80 dark:border-slate-800 flex gap-2 overflow-x-auto no-scrollbar">
+      <button type="button"
+        onclick="sendQuickPrompt('Bagaimana rincian komponen gaji dan jasa medis untuk profesi ini?')"
+        class="shrink-0 px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px] font-semibold text-slate-700 dark:text-slate-300 hover:border-teal-600 transition-colors">
+        Komponen Gaji
+      </button>
+      <button type="button" onclick="sendQuickPrompt('Apa saja tahapan mengurus STR dan izin praktik profesi ini?')"
+        class="shrink-0 px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px] font-semibold text-slate-700 dark:text-slate-300 hover:border-teal-600 transition-colors">
+        Syarat STR &amp; Izin
+      </button>
+      <button type="button"
+        onclick="sendQuickPrompt('Berikan tips menghadapi wawancara kerja rumah sakit untuk posisi ini.')"
+        class="shrink-0 px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px] font-semibold text-slate-700 dark:text-slate-300 hover:border-teal-600 transition-colors">
+        Tips Wawancara RS
+      </button>
+    </div>
+
+    <!-- Messages Feed -->
+    <div id="ai-chat-messages"
+      class="flex-1 p-4 overflow-y-auto space-y-3 text-xs sm:text-sm min-h-[260px] max-h-[380px]"></div>
+
+    <!-- Input Form -->
+    <form id="ai-chat-form" onsubmit="handleAiChatSubmit(event)"
+      class="p-3 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-center gap-2">
+      <input id="ai-chat-input" type="text" placeholder="Tulis pertanyaan karier Anda..." autocomplete="off"
+        class="flex-1 px-3.5 py-2.5 rounded-xl bg-[#F7F6F2] dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-teal-600" />
+      <button id="ai-send-btn" type="submit" aria-label="Kirim Pertanyaan"
+        class="w-10 h-10 rounded-xl bg-teal-600 hover:bg-teal-500 disabled:opacity-50 text-white flex items-center justify-center shrink-0 transition-colors">
+        <i data-lucide="send" class="w-4 h-4"></i>
+      </button>
+    </form>
+  </aside>
+
+  <!-- =====================================================================
+       TOAST NOTIFICATION & FOOTER
+       ===================================================================== -->
+  <div id="toast-notification"
+    class="hidden fixed bottom-5 left-5 z-50 px-4 py-3 rounded-xl bg-slate-900 text-white text-xs font-semibold shadow-xl border border-white/10">
+    <span id="toast-message">Notifikasi</span>
+  </div>
+
+  <!-- =====================================================================
+       COLOPHON & FOOTER
+       ===================================================================== -->
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950/70 py-12 text-xs text-slate-500 dark:text-slate-400 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100 dark:border-slate-800/80">
+        <div class="flex items-center gap-3">
+          <img src="logo.png" alt="Logo PetaKarir" class="w-8 h-8 rounded-lg object-contain bg-slate-900/5 dark:bg-white/10 p-0.5" />
+          <div>
+            <p class="font-extrabold text-sm text-slate-900 dark:text-white leading-none">PetaKarir</p>
+            <p class="text-[10px] uppercase font-mono tracking-widest text-slate-400 mt-0.5">Direktori Profesi Rumah Sakit</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-4 text-xs font-medium">
+          <a href="#hero-section" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Kembali ke Atas</a>
+          <span class="text-slate-300 dark:text-slate-700">•</span>
+          <a href="#detail-section" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Spesifikasi Profesi</a>
+          <span class="text-slate-300 dark:text-slate-700">•</span>
+          <button type="button" onclick="toggleAiChat(true)" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">
+            Konsultasi Karier AI
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[11px] text-slate-500 dark:text-slate-400">
+        <p>Rujukan regulasi: Kementerian Kesehatan RI, Konsil Kedokteran Indonesia (KKI), AIPNI/PPNI, IAI, PATELKI &amp; Standar STARKES.</p>
+        <p class="font-mono text-slate-400">PetaKarir © 2026. Hak Cipta Dilindungi.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script src="script.js"></script>
+</body>
+
+</html>
